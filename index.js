@@ -50,7 +50,7 @@ app.post('/webhook/', function (req, res) {
 				json: {
 					bot_id: "583a94490ffe3461496a8f4c",
 					consumer: {
-						facebookId: req.body.entry[0].sender.id || req.body.entry[0].recipient.id
+						facebookId: sender
 					},
 					headers: {
 						'api-key': "54asdkj1209nksnda"
