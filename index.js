@@ -46,6 +46,7 @@ app.post('/webhook/', function (req, res) {
 			/*
 			 1. Take the input message and get a response from the botman api and send it back.
 			*/
+			console.log(rooms)
 			request({
 				url: 'http://botman.ai/api/v1/send',
 				method: 'POST',
