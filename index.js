@@ -47,16 +47,16 @@ app.post('/webhook/', function (req, res) {
 			request({
 				url: 'http://botman.ai/api/v1/send',
 				method: 'POST',
+				headers: {
+					"api-key": "54asdkj1209nksnda"
+				},
 				json: {
 					bot_id: "583a94490ffe3461496a8f4c",
 					consumer: {
 						facebookId: sender
 					},
-					headers: {
-						'api-key': "54asdkj1209nksnda"
-					},
 					msg: event.message.text,
-					type: 'human'
+					type: "human"
 				}
 			}, function(error, response, body) {
 				if (error) {
