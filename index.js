@@ -33,12 +33,42 @@ app.post('/webhook/', function (req, res) {
 		let event = req.body.entry[0].messaging[i]
 		let sender = event.sender.id
 		if (event.message && event.message.text) {
-			let text = event.message.text
-			if (text === 'Generic') {
-				sendGenericMessage(sender)
-				continue
-			}
-			sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+			// let text = event.message.text
+			// if (text === 'Generic') {
+			// 	sendGenericMessage(sender)
+			// 	continue
+			// }
+			// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+
+
+			/*
+			 1. Take the input message and get a response from the botman api and send it back.
+			*/
+			request({
+				url: 'http://botman.ai/api/v1/send',
+				method: 'POST',
+				json: {
+					bot_id: "583a94490ffe3461496a8f4c",
+					consumer: {
+						facebookId: req.body.entry[0].sender.id || req.body.entry[0].recipient.id
+					},
+					headers: {
+						'api-key': "54asdkj1209nksnda"
+					},
+					msg: event.message.text,
+					type: 'human'
+				}
+			}, function(error, response, body) {
+				if (error) {
+					console.log('Error sending messages: ', error)
+				} else if (response.body.error) {
+					console.log('Error: ', response.body.error)
+				} else if (!error && response.statusCode == 200) {
+			    console.log(body) // Show the HTML for the Google homepage.
+					sendTextMessage(sender, body.generated_msg || "No Response")
+			  }
+			})
+
 		}
 		if (event.postback) {
 			let text = JSON.stringify(event.postback)
