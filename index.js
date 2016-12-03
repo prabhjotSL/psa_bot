@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 
+let rooms = {}
+
 app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
@@ -56,7 +58,8 @@ app.post('/webhook/', function (req, res) {
 						facebookId: sender
 					},
 					msg: event.message.text,
-					type: "human"
+					type: "human",
+					room_id: rooms[sender] ? rooms[sender] : null
 				}
 			}, function(error, response, body) {
 				if (error) {
@@ -65,6 +68,9 @@ app.post('/webhook/', function (req, res) {
 					console.log('Error: ', response.body.error)
 				} else if (!error && response.statusCode == 200) {
 			    console.log(body) // Show the HTML for the Google homepage.
+					if(!rooms[body.room.consumerId.facebookId]) {
+						rooms[body.room.consumerId.facebookId] = body.room._id
+					}
 					sendTextMessage(sender, body.generated_msg || "No Response")
 			  }
 			})
