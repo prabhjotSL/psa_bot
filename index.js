@@ -69,8 +69,8 @@ app.post('/webhook/', function (req, res) {
 					console.log('Error: ', response.body.error)
 				} else if (!error && response.statusCode == 200) {
 			    console.log(body) // Show the HTML for the Google homepage.
-					if(!rooms[body.room.consumerId.facebookId]) {
-						rooms[body.room.consumerId.facebookId] = body.room._id
+					if(!rooms[body.consumer.facebookId]) {
+						rooms[body.consumer.facebookId] = body.room._id
 					}
 					sendTextMessage(sender, body.generated_msg || "No Response")
 			  }
