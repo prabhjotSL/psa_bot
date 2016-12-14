@@ -54,7 +54,8 @@ app.post('/webhook/', function (req, res) {
 					"api-key": "54asdkj1209nksnda"
 				},
 				json: {
-					bot_id: "583a94490ffe3461496a8f4c",
+					// bot_id: "583a94490ffe3461496a8f4c", // PSA bot
+					bot_id: "584e90ca275cbe37db390ffa", // Barclays bot
 					consumer: {
 						facebookId: sender
 					},
