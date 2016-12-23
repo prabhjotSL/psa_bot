@@ -104,6 +104,10 @@ function sendAPICall(text, sender) {
 					else if(body.generated_msg.type == "facebook_text") {
 						sendTextMessage(sender, body.generated_msg.text, true)
 					}
+					else if(body.generated_msg.type == "facebook_audio") {
+						sendTextMessage(sender, body.generated_msg.text)
+						sendAudioMessage(sender, body.generated_msg.audio)
+					}
 				} else {
 					sendTextMessage(sender, body.generated_msg)
 				}
