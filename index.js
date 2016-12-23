@@ -243,7 +243,7 @@ function sendTextMessage(sender, text, quick_reply) {
 		if(quick_reply) {
 			setTimeout(function() {
 				sendQuickReply(sender)
-			}, 1000)
+			}, 5000)
 		}
 	})
 }
