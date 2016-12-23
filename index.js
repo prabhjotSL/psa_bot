@@ -44,11 +44,15 @@ app.post('/webhook/', function (req, res) {
 			// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 
 			console.log(rooms)
+			sendSenderAction(sender, "mark_seen")
+			sendSenderAction(sender, "typing_on")
 			sendAPICall(event.message.text, sender)
 
 		}
 		else if (event.postback) {
 			let text = JSON.stringify(event.postback)
+			sendSenderAction(sender, "mark_seen")
+			sendSenderAction(sender, "typing_on")
 			sendAPICall(text, sender)
 		}
 	}
@@ -80,12 +84,14 @@ function sendAPICall(text, sender) {
 			room_id: rooms[sender] ? rooms[sender] : null
 		}
 	}, function(error, response, body) {
+		sendSenderAction(sender, "typing_off")
 		if (error) {
 			console.log('Error sending messages: ', error)
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else if (!error && response.statusCode == 200) {
 			console.log(body) // Show the HTML for the Google homepage.
+
 			if(!rooms[body.consumer.facebookId]) {
 				rooms[body.consumer.facebookId] = body.room._id // This has to be stored and retrieved from Mongo and not in Memory.
 			}
@@ -101,6 +107,25 @@ function sendAPICall(text, sender) {
 				sendTextMessage(sender, "No Response")
 			}
 			// sendTextMessage(sender, body.generated_msg || "No Response")
+		}
+	})
+}
+
+function sendSenderAction(sender, action) {
+
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			sender_action: action
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
 		}
 	})
 }
