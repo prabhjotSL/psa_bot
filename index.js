@@ -100,6 +100,9 @@ function sendAPICall(text, sender) {
 					if(body.generated_msg.type == "facebook_button") {
 						sendDynamicMessage(sender, body.generated_msg.buttons)
 					} // other cases come here like audio, quick_reply, etc.
+					else if(body.generated_msg.type == "facebook_text") {
+						sendTextMessage(sender, body.generated_msg, true)
+					}
 				} else {
 					sendTextMessage(sender, body.generated_msg)
 				}
@@ -142,7 +145,7 @@ function setPersistentMenu() {
 		    },
 				{
 		      "type":"postback",
-		      "title":"Debit and Credit Card",
+		      "title":"Debit/Credit Card",
 		      "payload":"card"
 		    }
 		  ]
@@ -175,9 +178,68 @@ function sendSenderAction(sender, action) {
 	})
 }
 
-function sendTextMessage(sender, text) {
+function sendQuickReply(sender) {
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message:{
+		    "text":"Was this answer helpful?",
+		    "quick_replies":[
+		      {
+		        "content_type":"text",
+		        "title":"Yes",
+		        "payload":"yes"
+		      },
+		      {
+		        "content_type":"text",
+		        "title":"No",
+		        "payload":"no"
+		      }
+		    ]
+		  }
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
+function sendTextMessage(sender, text, quick_reply) {
 	let messageData = { text:text }
 
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+		if(quick_reply) {
+			sendQuickReply(sender)
+		}
+	})
+}
+
+function sendAudioMessage(sender, data) {
+	let messageData = {
+		"attachment": {
+			"type": "audio",
+			"payload": data
+		}
+	}
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
 		qs: {access_token:token},
