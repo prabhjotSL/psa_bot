@@ -12,6 +12,7 @@ app.set('port', (process.env.PORT || 5000))
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}))
 
+app.use(express.static('audio'))
 // parse application/json
 app.use(bodyParser.json())
 
