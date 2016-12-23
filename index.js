@@ -100,7 +100,7 @@ function sendAPICall(text, sender) {
 			} else {
 				sendTextMessage(sender, "No Response")
 			}
-			sendTextMessage(sender, body.generated_msg || "No Response")
+			// sendTextMessage(sender, body.generated_msg || "No Response")
 		}
 	})
 }
