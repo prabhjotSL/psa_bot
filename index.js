@@ -228,7 +228,9 @@ function sendTextMessage(sender, text, quick_reply) {
 			console.log('Error: ', response.body.error)
 		}
 		if(quick_reply) {
-			sendQuickReply(sender)
+			setTimeout(function() {
+				sendQuickReply(sender)
+			}, 1000)
 		}
 	})
 }
