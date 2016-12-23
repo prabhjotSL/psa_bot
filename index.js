@@ -100,6 +100,9 @@ function sendAPICall(text, sender) {
 				if(body.generated_msg.type) {
 					if(body.generated_msg.type == "facebook_button") {
 						sendDynamicMessage(sender, body.generated_msg.buttons)
+						if(body.generated_msg.audio) {
+							sendAudioMessage(sender, body.generated_msg.audio)
+						}
 					} // other cases come here like audio, quick_reply, etc.
 					else if(body.generated_msg.type == "facebook_text") {
 						sendTextMessage(sender, body.generated_msg.text, true)
@@ -109,7 +112,9 @@ function sendAPICall(text, sender) {
 					}
 					else if(body.generated_msg.type == "facebook_audio") {
 						sendTextMessage(sender, body.generated_msg.text)
-						sendAudioMessage(sender, body.generated_msg.audio)
+						if(body.generated_msg.audio) {
+							sendAudioMessage(sender, body.generated_msg.audio)
+						}
 					}
 				} else {
 					sendTextMessage(sender, body.generated_msg)
