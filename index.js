@@ -42,46 +42,13 @@ app.post('/webhook/', function (req, res) {
 			// }
 			// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 
-
-			/*
-			 1. Take the input message and get a response from the botman api and send it back.
-			*/
 			console.log(rooms)
-			request({
-				url: 'http://botman.ai/api/v1/send',
-				method: 'POST',
-				headers: {
-					"api-key": "54asdkj1209nksnda"
-				},
-				json: {
-					// bot_id: "583a94490ffe3461496a8f4c", // PSA bot
-					bot_id: "584e90ca275cbe37db390ffa", // Barclays bot
-					consumer: {
-						facebookId: sender
-					},
-					msg: event.message.text,
-					type: "human",
-					room_id: rooms[sender] ? rooms[sender] : null
-				}
-			}, function(error, response, body) {
-				if (error) {
-					console.log('Error sending messages: ', error)
-				} else if (response.body.error) {
-					console.log('Error: ', response.body.error)
-				} else if (!error && response.statusCode == 200) {
-			    console.log(body) // Show the HTML for the Google homepage.
-					if(!rooms[body.consumer.facebookId]) {
-						rooms[body.consumer.facebookId] = body.room._id
-					}
-					sendTextMessage(sender, body.generated_msg || "No Response")
-			  }
-			})
+			sendAPICall(event.message.text)
 
 		}
 		if (event.postback) {
 			let text = JSON.stringify(event.postback)
-			sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
-			continue
+			sendAPICall(text)
 		}
 	}
 	res.sendStatus(200)
@@ -92,6 +59,50 @@ app.post('/webhook/', function (req, res) {
 // const token = process.env.PAGE_ACCESS_TOKEN
 // const token = "EAAFWMtduDzYBABWlnAZCgF2ms8wTPBrHfFUrETnlpLfNF6jZBZA80ryFPGleXS2crzx5m9r1fiUbnTstWJoI9y9OC3cK6t8IJARu6aEgyBRaBLgllEkxIpthM1S6mKGFCkb6KRh1gioeC9Q00HHGmFx06CiTshlN0leA5prwQZDZD"
 const token = process.env.FB_PAGE_ACCESS_TOKEN
+
+function sendAPICall(text) {
+	request({
+		url: 'http://botman.ai/api/v1/send',
+		method: 'POST',
+		headers: {
+			"api-key": "54asdkj1209nksnda"
+		},
+		json: {
+			// bot_id: "583a94490ffe3461496a8f4c", // PSA bot
+			bot_id: "584e90ca275cbe37db390ffa", // Barclays bot
+			consumer: {
+				facebookId: sender
+			},
+			msg: text,
+			type: "human",
+			platform: "facebook",
+			room_id: rooms[sender] ? rooms[sender] : null
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		} else if (!error && response.statusCode == 200) {
+			console.log(body) // Show the HTML for the Google homepage.
+			if(!rooms[body.consumer.facebookId]) {
+				rooms[body.consumer.facebookId] = body.room._id // This has to be stored and retrieved from Mongo and not in Memory.
+			}
+			if(body.generated_msg) {
+				if(body.generated_msg.type) {
+					if(body.generated_msg.type == "facebook_button") {
+						sendDynamicMessage(sender, body.generated_msg.buttons)
+					} // other cases come here like audio, quick_reply, etc.
+				} else {
+					sendTextMessage(sender, body.generated_msg)
+				}
+			} else {
+				sendTextMessage(sender, "No Response")
+			}
+			sendTextMessage(sender, body.generated_msg || "No Response")
+		}
+	})
+}
 
 function sendTextMessage(sender, text) {
 	let messageData = { text:text }
@@ -113,7 +124,31 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-function sendGenericMessage(sender) {
+function sendDynamicMessage(sender, data) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": data
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
+function sendGenericMessage(sender, data) {
 	let messageData = {
 		"attachment": {
 			"type": "template",
