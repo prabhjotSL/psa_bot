@@ -101,7 +101,7 @@ function sendAPICall(text, sender) {
 						sendDynamicMessage(sender, body.generated_msg.buttons)
 					} // other cases come here like audio, quick_reply, etc.
 					else if(body.generated_msg.type == "facebook_text") {
-						sendTextMessage(sender, body.generated_msg..text, true)
+						sendTextMessage(sender, body.generated_msg.text, true)
 					}
 				} else {
 					sendTextMessage(sender, body.generated_msg)
