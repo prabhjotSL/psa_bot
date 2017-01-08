@@ -193,7 +193,7 @@ function sendMessagesToImichat(sender, body, messages) {
 		}	else {
 			console.log("Sending message of customer agent back to the bot: ", body, sender)
 			rooms[body.consumer.facebookId].isBotEnabled = false
-			sendTextMessage(sender, body.generated_msg)
+			sendTextMessage(sender, body.generated_msg.text)
 		}
 	})
 }
