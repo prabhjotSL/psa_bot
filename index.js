@@ -136,8 +136,6 @@ function sendSingleMessageToImichat(sender, message, roomId) {
 		console.log(body)
 		if (error) {
 			console.log('Error sending single message to IMIChat: ', error)
-		} else if (response.body.error) {
-			console.log('Error in IMIChat: ', response.body.error)
 		} else if (!error && response.statusCode == 200) {
 			console.log("Sent Single Message to IMIChat")
 		}
