@@ -73,9 +73,7 @@ app.post('/webhook/', function (req, res) {
 				if(rooms[sender]) {
 					rooms[sender].isBotEnabled = true
 				}
-			}
-
-			if(rooms[sender] && !rooms[sender].isBotEnabled) {
+			} else if(rooms[sender] && !rooms[sender].isBotEnabled) {
 				sendSingleMessageToImichat(sender, event.message.text, rooms[sender].room_id)
 			} else {
 				sendSenderAction(sender, "mark_seen")
