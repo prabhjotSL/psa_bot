@@ -232,6 +232,7 @@ function sendAPICall(text, sender) {
 			console.log(body) // Show the HTML for the Google homepage.
 
 			if(!rooms[body.consumer.facebookId]) {
+				rooms[body.consumer.facebookId] = {}
 				rooms[body.consumer.facebookId].room_id = body.room._id // This has to be stored and retrieved from Mongo and not in Memory.
 				rooms[body.consumer.facebookId].isBotEnabled = true
 			}
