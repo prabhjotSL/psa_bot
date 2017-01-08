@@ -142,19 +142,18 @@ function formatMessagesForIMIChat(messages) {
         single_message.type = "MT"
 				single_message.text = messages[i].message.text // fix this.
         new_messages.push(single_message)
-      } else if(messages[i].type == "human") {
+      } else if(messages[i].userType == "human") {
         single_message.type = "MO"
 				single_message.text = messages[i].message
         new_messages.push(single_message)
 
-        date_agent_iso_format = (new Date(messages[i].createdAt + 2000)).toISOString()
-        var single_message = {
-          date: date_agent_iso_format,
-          text: messages[i].message,
-          type: "MT"
-        }
-
-        new_messages.push(single_message)
+        // date_agent_iso_format = (new Date(messages[i].createdAt + 2000)).toISOString()
+        // var single_message = {
+        //   date: date_agent_iso_format,
+        //   text: messages[i].message,
+        //   type: "MT"
+        // }
+        // new_messages.push(single_message)
       }
 
     }
