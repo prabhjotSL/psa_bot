@@ -69,6 +69,12 @@ app.post('/webhook/', function (req, res) {
 			// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 
 			console.log(rooms)
+			if(event.message.text == "reset") {
+				if(rooms[sender]) {
+					rooms[sender].isBotEnabled = true
+				}
+			}
+
 			if(rooms[sender] && !rooms[sender].isBotEnabled) {
 				sendSingleMessageToImichat(sender, event.message.text, rooms[sender].room_id)
 			} else {
