@@ -23,14 +23,21 @@ app.get('/', function (req, res) {
 
 app.post('/imichatmt', function(req, res) {
 	// request for message from Agent comes here.
-	console.log(req.body)
-	console.log(req.headers)
+	// console.log(req.body)
+	// console.log(req.headers)
 	var message = req.body.channels["OTT-Messaging"].fb.text
 	var psid = req.body.destination[0].psid[0]
 	sendTextMessage(psid, message) // Change this PSID to PSID of the demo messenger client.
 	setTimeout(function() {
-		res.json({success: true})
-	}, 2000)
+		res.json({
+			"response":[{
+				"description":"Queued",
+				"correlationid": psid + "_" + randomInt(0,10000000),
+				"code":"1001",
+				"transid": randomInt(0,10000000) + "_" + psid
+			}]
+		})
+	}, 1000)
 })
 
 app.post('/imichatclosed', function(req, res) {
@@ -38,10 +45,10 @@ app.post('/imichatclosed', function(req, res) {
 	// this means that the chat has been closed in imichat and we need to reset isBotEnabled to true.
 	// var chatID = req.headers["Chatid"]
 	// console.log(chatID)
-	rooms["1069317166466636"].isBotEnabled = true
+	rooms["1069317166466636"].isBotEnabled = true // TODO: Change this ID to ID of ALEX.
 	setTimeout(function() {
 		res.json({success: true})
-	}, 2000)
+	}, 1000)
 })
 
 // for facebook verification
@@ -202,11 +209,11 @@ function sendMessagesToImichat(sender, body, messages) {
 		console.log(error, response, output)
 		if (error) {
 			console.log('Error sending messages to IMIChat: ', error)
-			sendTextMessage(sender, body.generated_msg)
+			sendTextMessage(sender, "Sorry I will connect you to our customer support executive.")
 		}	else {
 			console.log("Sending message of customer agent back to the bot: ", body, sender)
 			rooms[body.consumer.facebookId].isBotEnabled = false
-			sendTextMessage(sender, body.generated_msg.text)
+			sendTextMessage(sender, body.generated_msg.texts[randomInt(0,body.generated_msg.texts.length)])
 		}
 	})
 }
@@ -265,15 +272,24 @@ function sendAPICall(text, sender) {
 						}
 					} // other cases come here like audio, quick_reply, etc.
 					else if(body.generated_msg.type == "facebook_text") {
-						sendTextMessage(sender, body.generated_msg.text, true)
+						var randomNumber = randomInt(0,body.generated_msg.texts.length)
+						sendTextMessage(sender, body.generated_msg.texts[randomNumber], true)
 						if(body.generated_msg.audio) {
-							sendAudioMessage(sender, body.generated_msg.audio)
+							sendAudioMessage(sender, body.generated_msg.audio[randomNumber])
 						}
 					}
 					else if(body.generated_msg.type == "facebook_audio") {
-						sendTextMessage(sender, body.generated_msg.text)
+						var randomNumber = randomInt(0,body.generated_msg.texts.length)
+						sendTextMessage(sender, body.generated_msg.texts[randomNumber])
 						if(body.generated_msg.audio) {
-							sendAudioMessage(sender, body.generated_msg.audio)
+							sendAudioMessage(sender, body.generated_msg.audio[randomNumber])
+						}
+					}
+					else if(body.generated_msg.type == "facebook_video") {
+						var randomNumber = randomInt(0, body.generated_msg.texts.length)
+						sendTextMessage(sender, body.generated_msg.texts[randomNumber])
+						if(body.generated_msg.video) {
+							sendVideoMessage(sender, body.generated_msg.video)
 						}
 					}
 				} else {
@@ -412,6 +428,30 @@ function sendAudioMessage(sender, data) {
 	let messageData = {
 		"attachment": {
 			"type": "audio",
+			"payload": data
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
+function sendVideoMessage(sender, data) {
+	let messageData = {
+		"attachment": {
+			"type": "video",
 			"payload": data
 		}
 	}
