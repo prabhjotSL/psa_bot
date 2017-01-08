@@ -185,7 +185,7 @@ function sendMessagesToImichat(sender, body, messages) {
 		},
 		method: 'POST',
 		json: reqBody
-	}, function(error, request, body) {
+	}, function(error, response, body) {
 		if (error) {
 			console.log('Error sending messages to IMIChat: ', error)
 			sendTextMessage(sender, body.generated_msg)
