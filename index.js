@@ -190,10 +190,7 @@ function sendMessagesToImichat(sender, body, messages) {
 		if (error) {
 			console.log('Error sending messages to IMIChat: ', error)
 			sendTextMessage(sender, body.generated_msg)
-		} else if (response.body.error) {
-			console.log('Error in IMIChat: ', response.body.error)
-			sendTextMessage(sender, body.generated_msg)
-		} else if (!error && response.statusCode == 200) {
+		}	else {
 			console.log("Sending message of customer agent back to the bot: ", body, sender)
 			rooms[body.consumer.facebookId].isBotEnabled = false
 			sendTextMessage(sender, body.generated_msg)
