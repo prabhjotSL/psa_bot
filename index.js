@@ -97,11 +97,12 @@ app.post('/webhook/', function (req, res) {
 })
 
 function sendSingleMessageToImichat(sender, message, roomId) {
+	console.log(message, sender, roomId)
 	var dateMsg = new Date()
 	var reqBody = {
 	    "submittedOn": dateMsg.getTime(),
 	    "appId": "a_20170106",
-	    "ts": dateMsg.toISOString(),
+	    "ts": dateMsg.toISOString().toString(),
 	    "locale": "en_GB",
 	    "psid": "1069317166466636",
 	    "masterProfile": "Sandbox_cpms_1",
@@ -113,14 +114,16 @@ function sendSingleMessageToImichat(sender, message, roomId) {
 	    "name": "Imimobile Hyd",
 	    "gender": "male",
 	    "fetchedOn": dateMsg.getTime(),
-	    "tid": roomId + "_" + randomInt(0,10000000),
+	    "tid": roomId + "_" + sender + "_" + randomInt(0,10000000),
 	    "profile_pic": "https://scontent.xx.fbcdn.net/v/t1.0-1/1918189_124190034639475_6618885323877539072_n.jpg?oh=43229a43531ce83576125f6e53cbfb23&oe=5917A3E8",
 	    "channel": "fb"
 	}
+	console.log(reqBody)
 	var reqParams = {
 		teamid: 12,
 		servicekey: 'B2160D34-E8D5-4C7A-A7A4-E2367F1ED2E2'
 	}
+	console.log(reqParams)
 	request({
 		url: 'https://notify.imichat.io/ngmp2chat/imiconnectFB.aspx',
 		params: reqParams,
@@ -129,6 +132,7 @@ function sendSingleMessageToImichat(sender, message, roomId) {
 		},
 		json: reqBody
 	}, function(error, response, body) {
+		console.log(body)
 		if (error) {
 			console.log('Error sending single message to IMIChat: ', error)
 		} else if (response.body.error) {
