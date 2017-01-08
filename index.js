@@ -125,8 +125,8 @@ function sendSingleMessageToImichat(sender, message, roomId) {
 	}
 	console.log(reqParams)
 	request({
-		url: "https://notify.imichat.io/ngmp2chat/imiconnectFB.aspx",
-		params: reqParams,
+		url: "https://notify.imichat.io/ngmp2chat/imiconnectFB.aspx?teamid=12&servicekey=B2160D34-E8D5-4C7A-A7A4-E2367F1ED2E2",
+		// params: reqParams,
 		headers: {
 			'content-type': 'application/json'
 		},
