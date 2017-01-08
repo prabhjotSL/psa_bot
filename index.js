@@ -158,7 +158,7 @@ function formatMessagesForIMIChat(messages) {
       }
 
     }
-
+		console.log(new_messages)
     return new_messages
 }
 
@@ -193,6 +193,7 @@ function sendMessagesToImichat(sender, body, messages) {
 			console.log('Error in IMIChat: ', response.body.error)
 			sendTextMessage(sender, body.generated_msg)
 		} else if (!error && response.statusCode == 200) {
+			console.log("Sending message of customer agent back to the bot: ", body, sender)
 			rooms[body.consumer.facebookId].isBotEnabled = false
 			sendTextMessage(sender, body.generated_msg)
 		}
