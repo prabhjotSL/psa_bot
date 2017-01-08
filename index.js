@@ -133,20 +133,21 @@ function formatMessagesForIMIChat(messages) {
 	console.log("Messages: ", messages)
 	var new_messages = []
     for(var i=0; i<messages.length; i++) {
-      var date_iso_format = (new Date(messages[i].created_at)).toISOString()
+      var date_iso_format = (new Date(messages[i].createdAt)).toISOString()
       var single_message = {
-        date: date_iso_format,
-        text: messages[i].message
+        date: date_iso_format
       }
 
       if(messages[i].userType == "bot") {
         single_message.type = "MT"
+				single_message.text: messages[i].message.text // fix this.
         new_messages.push(single_message)
       } else if(messages[i].type == "human") {
         single_message.type = "MO"
+				single_message.text: messages[i].message
         new_messages.push(single_message)
 
-        date_agent_iso_format = (new Date(messages[i].created_at + 2000)).toISOString()
+        date_agent_iso_format = (new Date(messages[i].createdAt + 2000)).toISOString()
         var single_message = {
           date: date_agent_iso_format,
           text: messages[i].message,
