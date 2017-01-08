@@ -28,14 +28,20 @@ app.post('/imichatmt', function(req, res) {
 	var message = req.body.channels["OTT-Messaging"].fb.text
 	var psid = req.body.destination[0].psid[0]
 	sendTextMessage(psid, message) // Change this PSID to PSID of the demo messenger client.
+	setTimeout(function() {
+		res.json({success: true})
+	}, 2000)
 })
 
 app.post('/imichatclosed', function(req, res) {
-	console.log(req.headers)
+	// console.log(req.headers)
 	// this means that the chat has been closed in imichat and we need to reset isBotEnabled to true.
-	var chatID = req.headers["Chatid"]
-	console.log(chatID)
+	// var chatID = req.headers["Chatid"]
+	// console.log(chatID)
 	rooms["1069317166466636"].isBotEnabled = true
+	setTimeout(function() {
+		res.json({success: true})
+	}, 2000)
 })
 
 // for facebook verification
