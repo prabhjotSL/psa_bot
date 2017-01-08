@@ -289,6 +289,7 @@ function sendAPICall(text, sender) {
 						var randomNumber = randomInt(0, body.generated_msg.texts.length)
 						sendTextMessage(sender, body.generated_msg.texts[randomNumber])
 						if(body.generated_msg.video) {
+							sendSenderAction(sender, "typing_on")
 							sendVideoMessage(sender, body.generated_msg.video)
 						}
 					}
@@ -464,6 +465,7 @@ function sendVideoMessage(sender, data) {
 			message: messageData,
 		}
 	}, function(error, response, body) {
+		sendSenderAction(sender, "typing_off")
 		if (error) {
 			console.log('Error sending messages: ', error)
 		} else if (response.body.error) {
