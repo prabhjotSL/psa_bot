@@ -66,7 +66,7 @@ app.post('/webhook/', function (req, res) {
 	for (let i = 0; i < messaging_events.length; i++) {
 		let event = req.body.entry[0].messaging[i]
 		let sender = event.sender.id
-		console.log(event);
+		// console.log(event);
 		if (event.message && event.message.text) {
 			// let text = event.message.text
 			// if (text === 'Generic') {
@@ -75,7 +75,7 @@ app.post('/webhook/', function (req, res) {
 			// }
 			// sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 
-			console.log(rooms)
+			// console.log(rooms)
 			if(event.message.text == "reset") {
 				if(rooms[sender]) {
 					rooms[sender].isBotEnabled = true
@@ -125,12 +125,12 @@ function sendSingleMessageToImichat(sender, message, roomId) {
 	    "profile_pic": "https://scontent.xx.fbcdn.net/v/t1.0-1/1918189_124190034639475_6618885323877539072_n.jpg?oh=43229a43531ce83576125f6e53cbfb23&oe=5917A3E8",
 	    "channel": "fb"
 	}
-	console.log(reqBody)
+	// console.log(reqBody)
 	var reqParams = {
 		teamid: 12,
 		servicekey: "B2160D34-E8D5-4C7A-A7A4-E2367F1ED2E2"
 	}
-	console.log(reqParams)
+	// console.log(reqParams)
 	request({
 		url: "https://notify.imichat.io/ngmp2chat/imiconnectFB.aspx?teamid=12&servicekey=B2160D34-E8D5-4C7A-A7A4-E2367F1ED2E2",
 		// params: reqParams,
@@ -140,7 +140,7 @@ function sendSingleMessageToImichat(sender, message, roomId) {
 		method: "POST",
 		json: reqBody
 	}, function(error, response, body) {
-		console.log(body)
+		// console.log(body)
 		if (error) {
 			console.log('Error sending single message to IMIChat: ', error)
 		} else if (!error && response.statusCode == 200) {
@@ -211,7 +211,7 @@ function sendMessagesToImichat(sender, body, messages) {
 			console.log('Error sending messages to IMIChat: ', error)
 			sendTextMessage(sender, "Sorry I will connect you to our customer support executive.")
 		}	else {
-			console.log("Sending message of customer agent back to the bot: ", body, sender)
+			// console.log("Sending message of customer agent back to the bot: ", body, sender)
 			rooms[body.consumer.facebookId].isBotEnabled = false
 			var msg = body.generated_msg.texts ? body.generated_msg.texts[randomInt(0,body.generated_msg.texts.length)] : body.generated_msg
 			sendTextMessage(sender, msg)
@@ -219,6 +219,47 @@ function sendMessagesToImichat(sender, body, messages) {
 	})
 }
 
+
+function sendMessages(messages, i, sender) {
+	if(i < messages.length) {
+		if(messages[i].type) {
+			if(messages[i].type == "facebook_text") {
+				// Only Text
+				var randomNumber = randomInt(0, messages[i].texts.length)
+				sendTextMessage(sender, messages[i].texts[randomNumber])
+			} else if(messages[i].type == "facebook_audio") {
+				// Text + Audio
+				var randomNumber = randomInt(0,messages[i].texts.length)
+				sendTextMessage(sender, messages[i].texts[randomNumber])
+				if(messages[i].audio) {
+					sendAudioMessage(sender, messages[i].audio[randomNumber])
+				}
+			} else if(messages[i].type == "facebook_video") {
+				var randomNumber = randomInt(0, messages[i].texts.length)
+				sendTextMessage(sender, messages[i].texts[randomNumber])
+				if(messages[i].video) {
+					sendSenderAction(sender, "typing_on")
+					sendVideoMessage(sender, messages[i].video)
+				}
+			} else if(messages[i].type == "facebook_quick_reply") {
+				sendQuickReply(sender, messages[i].quick_reply)
+			} else if(messages[i].type == "facebook_button") {
+				sendDynamicMessage(sender, messages[i].buttons)
+			} else {
+					// Change i and try the next message.
+					// sendTextMessage(sender, messages[i].text)
+			}
+		} else {
+			// Change i and try the next message.
+		}
+		i += 1
+		sendSenderAction(sender, "typing_on")
+		setTimeout(function() {
+			sendSenderAction(sender, "typing_off")
+			sendMessages(messages, i, sender)
+		}, 1000)
+	}
+}
 
 // recommended to inject access tokens as environmental variables, e.g.
 // const token = process.env.PAGE_ACCESS_TOKEN
@@ -265,38 +306,40 @@ function sendAPICall(text, sender) {
 				// rooms[body.consumer.facebookId].isBotEnabled = false
 			}
 			else if(body.generated_msg) {
-				if(body.generated_msg.type) {
-					if(body.generated_msg.type == "facebook_button") {
-						sendDynamicMessage(sender, body.generated_msg.buttons)
-						if(body.generated_msg.audio) {
-							sendAudioMessage(sender, body.generated_msg.audio)
-						}
-					} // other cases come here like audio, quick_reply, etc.
-					else if(body.generated_msg.type == "facebook_text") {
-						var randomNumber = randomInt(0,body.generated_msg.texts.length)
-						sendTextMessage(sender, body.generated_msg.texts[randomNumber], true)
-						if(body.generated_msg.audio) {
-							sendAudioMessage(sender, body.generated_msg.audio[randomNumber])
-						}
-					}
-					else if(body.generated_msg.type == "facebook_audio") {
-						var randomNumber = randomInt(0,body.generated_msg.texts.length)
-						sendTextMessage(sender, body.generated_msg.texts[randomNumber])
-						if(body.generated_msg.audio) {
-							sendAudioMessage(sender, body.generated_msg.audio[randomNumber])
-						}
-					}
-					else if(body.generated_msg.type == "facebook_video") {
-						var randomNumber = randomInt(0, body.generated_msg.texts.length)
-						sendTextMessage(sender, body.generated_msg.texts[randomNumber])
-						if(body.generated_msg.video) {
-							sendSenderAction(sender, "typing_on")
-							sendVideoMessage(sender, body.generated_msg.video)
-						}
-					}
-				} else {
-					sendTextMessage(sender, body.generated_msg)
-				}
+				// We get a facebook array here.
+				sendMessages(body.generated_msg, 0, sender)
+				// if(body.generated_msg.type) {
+				// 	if(body.generated_msg.type == "facebook_button") {
+				// 		sendDynamicMessage(sender, body.generated_msg.buttons)
+				// 		if(body.generated_msg.audio) {
+				// 			sendAudioMessage(sender, body.generated_msg.audio)
+				// 		}
+				// 	} // other cases come here like audio, quick_reply, etc.
+				// 	else if(body.generated_msg.type == "facebook_text") {
+				// 		var randomNumber = randomInt(0,body.generated_msg.texts.length)
+				// 		sendTextMessage(sender, body.generated_msg.texts[randomNumber])
+				// 		if(body.generated_msg.audio) {
+				// 			sendAudioMessage(sender, body.generated_msg.audio[randomNumber])
+				// 		}
+				// 	}
+				// 	else if(body.generated_msg.type == "facebook_audio") {
+				// 		var randomNumber = randomInt(0,body.generated_msg.texts.length)
+				// 		sendTextMessage(sender, body.generated_msg.texts[randomNumber])
+				// 		if(body.generated_msg.audio) {
+				// 			sendAudioMessage(sender, body.generated_msg.audio[randomNumber])
+				// 		}
+				// 	}
+				// 	else if(body.generated_msg.type == "facebook_video") {
+				// 		var randomNumber = randomInt(0, body.generated_msg.texts.length)
+				// 		sendTextMessage(sender, body.generated_msg.texts[randomNumber])
+				// 		if(body.generated_msg.video) {
+				// 			sendSenderAction(sender, "typing_on")
+				// 			sendVideoMessage(sender, body.generated_msg.video)
+				// 		}
+				// 	}
+				// } else {
+				// 	sendTextMessage(sender, body.generated_msg)
+				// }
 			} else {
 				sendTextMessage(sender, "No Response")
 			}
@@ -369,28 +412,30 @@ function sendSenderAction(sender, action) {
 	})
 }
 
-function sendQuickReply(sender) {
+function sendQuickReply(sender, data) {
+	let messageData = data
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
 		qs: {access_token:token},
 		method: 'POST',
 		json: {
 			recipient: {id:sender},
-			message:{
-		    "text":"Was this answer helpful?",
-		    "quick_replies":[
-		      {
-		        "content_type":"text",
-		        "title":"Yes",
-		        "payload":"yes"
-		      },
-		      {
-		        "content_type":"text",
-		        "title":"No",
-		        "payload":"no"
-		      }
-		    ]
-		  }
+			message: messageData
+			// message:{
+		  //   "text":"Was this answer helpful?",
+		  //   "quick_replies":[
+		  //     {
+		  //       "content_type":"text",
+		  //       "title":"Yes",
+		  //       "payload":"yes"
+		  //     },
+		  //     {
+		  //       "content_type":"text",
+		  //       "title":"No",
+		  //       "payload":"no"
+		  //     }
+		  //   ]
+		  // }
 		}
 	}, function(error, response, body) {
 		if (error) {
@@ -401,7 +446,7 @@ function sendQuickReply(sender) {
 	})
 }
 
-function sendTextMessage(sender, text, quick_reply) {
+function sendTextMessage(sender, text) {
 	let messageData = { text:text }
 
 	request({
@@ -418,10 +463,10 @@ function sendTextMessage(sender, text, quick_reply) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		}
-		if(quick_reply) {
-			setTimeout(function() {
-				sendQuickReply(sender)
-			}, 5000)
+		// if(quick_reply) {
+		// 	setTimeout(function() {
+		// 		sendQuickReply(sender)
+		// 	}, 5000)
 		}
 	})
 }
