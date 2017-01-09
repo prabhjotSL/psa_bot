@@ -101,10 +101,15 @@ app.post('/webhook/', function (req, res) {
 				sendInstructions(sender)
 			} else if(event.postback.payload == "newton") {
 				sendTextMessage(sender, "We help people achieve their ambitions – in the right way. This sits at the core of our business and underpins everything that we do.")
+				sendTextMessage(sender, "Let me show you a video showcasing our values:")
+				sendSenderAction(sender, "typing_on")
 				sendVideoMessage(sender, {"url": "https://ancient-fjord-82489.herokuapp.com/values.mp4"})
+				setTimeout(function() {
+					sendSenderAction(sender, "typing_off")
+				}, 5000)
 			} else if(event.postback.payload == "plato") {
 				sendTextMessage(sender, "We have more than 325 years of history and expertise in banking. From our beginnings in Lombard Street, London through to the launch of the world's first ATM and innovative mobile phone payments services, find out more about our achievements to date: https://timeline.barclays/")
-				sendImage(sender, {"url": "http://i.telegraph.co.uk/multimedia/archive/02263/barclays_2263525b.jpg"})
+				sendImage(sender, {"url": "http://ichef-1.bbci.co.uk/news/660/media/images/76212000/jpg/_76212103_3058166.jpg"})
 			} else {
 				sendSenderAction(sender, "mark_seen")
 				sendSenderAction(sender, "typing_on")
