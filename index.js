@@ -221,6 +221,7 @@ function sendMessagesToImichat(sender, body, messages) {
 
 
 function sendMessages(messages, i, sender) {
+	console.log(messages, i)
 	if(i < messages.length) {
 		if(messages[i].type) {
 			if(messages[i].type == "facebook_text") {
@@ -414,6 +415,7 @@ function sendSenderAction(sender, action) {
 
 function sendQuickReply(sender, data) {
 	let messageData = data
+	console.log(messageData, "Quick Reply")
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
 		qs: {access_token:token},
