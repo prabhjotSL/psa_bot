@@ -102,7 +102,7 @@ app.post('/webhook/', function (req, res) {
 			} else if(event.postback.payload == "newton") {
 				sendTextMessage(sender, "We help people achieve their ambitions – in the right way. This sits at the core of our business and underpins everything that we do.")
 				setTimeout(function() {
-					sendTextMessage(sender, "Let me show you a video showcasing our values:")
+					sendTextMessage(sender, "Let me show you a video showcasing our values..")
 					sendSenderAction(sender, "typing_on")
 				}, 500)
 				sendVideoMessage(sender, {"url": "https://ancient-fjord-82489.herokuapp.com/values.mp4"})
@@ -179,7 +179,7 @@ function formatMessagesForIMIChat(messages) {
 
       if(messages[i].userType == "bot") {
         single_message.type = "MT"
-				single_message.text = messages[i].message[0].text // fix this.
+				single_message.text = messages[i].message[0].text || "Alright, let me direct you to the best person to handle your query. We will get back to you shortly." // fix this.
         new_messages.push(single_message)
       } else if(messages[i].userType == "human") {
         single_message.type = "MO"
