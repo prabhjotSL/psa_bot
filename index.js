@@ -100,9 +100,11 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, "Hi, I'm Alex from Barclays Bank. I can help you with the following queries:")
 				sendInstructions(sender)
 			} else if(event.postback.payload == "newton") {
-
+				sendTextMessage(sender, "We help people achieve their ambitions – in the right way. This sits at the core of our business and underpins everything that we do.")
+				sendVideoMessage(sender, {"url": "https://ancient-fjord-82489.herokuapp.com/values.mp4"})
 			} else if(event.postback.payload == "plato") {
-
+				sendTextMessage(sender, "We have more than 325 years of history and expertise in banking. From our beginnings in Lombard Street, London through to the launch of the world's first ATM and innovative mobile phone payments services, find out more about our achievements to date: https://timeline.barclays/")
+				sendImage(sender, {"url": "http://i.telegraph.co.uk/multimedia/archive/02263/barclays_2263525b.jpg"})
 			} else {
 				sendSenderAction(sender, "mark_seen")
 				sendSenderAction(sender, "typing_on")
@@ -372,7 +374,7 @@ function setPersistentMenu() {
 			call_to_actions:[
 		    {
 		      "type":"postback",
-		      "title":"How can you help me",
+		      "title":"How can you help me?",
 		      "payload":"einstein"
 		    },
 		    {
