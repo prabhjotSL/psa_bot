@@ -179,7 +179,11 @@ function formatMessagesForIMIChat(messages) {
 
       if(messages[i].userType == "bot") {
         single_message.type = "MT"
-				single_message.text = messages[i].message[0].text || "Alright, let me direct you to the best person to handle your query. We will get back to you shortly." // fix this.
+				if(messages[i].message && messages[i].message.length > 0){
+					single_message.text = messages[i].message[0].text
+				} else {
+					single_message.text = "Alright, let me direct you to the best person to handle your query. We will get back to you shortly." // fix this.
+				}
         new_messages.push(single_message)
       } else if(messages[i].userType == "human") {
         single_message.type = "MO"
