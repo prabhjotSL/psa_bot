@@ -467,7 +467,7 @@ function sendTextMessage(sender, text) {
 		// 	setTimeout(function() {
 		// 		sendQuickReply(sender)
 		// 	}, 5000)
-		}
+		// }
 	})
 }
 
