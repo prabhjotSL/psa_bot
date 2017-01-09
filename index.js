@@ -169,7 +169,7 @@ function formatMessagesForIMIChat(messages) {
 
       if(messages[i].userType == "bot") {
         single_message.type = "MT"
-				single_message.text = messages[i][0].message.text // fix this.
+				single_message.text = messages[i].message[0].text // fix this.
         new_messages.push(single_message)
       } else if(messages[i].userType == "human") {
         single_message.type = "MO"
