@@ -95,16 +95,16 @@ app.post('/webhook/', function (req, res) {
 			console.log("POSTBACK: ", text)
 			if(rooms[sender] && !rooms[sender].isBotEnabled) {
 				sendSingleMessageToImichat(sender, text)
-			} else if(text == "einstein") {
+			} else if(event.postback.payload == "einstein") {
 				sendTextMessage(sender, "Hi, I'm Alex from Barclays Bank. I can help you with queries related to your account, cheques, payments & transactions, direct debits, debit and credit cards.")
-			} else if(text == "newton") {
+			} else if(event.postback.payload == "newton") {
 
-			} else if(text == "plato") {
+			} else if(event.postback.payload == "plato") {
 
 			} else {
 				sendSenderAction(sender, "mark_seen")
 				sendSenderAction(sender, "typing_on")
-				sendAPICall(text, sender)
+				sendAPICall(event.postback.payload, sender)
 			}
 		}
 	}
