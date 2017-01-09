@@ -242,6 +242,8 @@ function sendMessages(messages, i, sender) {
 					sendSenderAction(sender, "typing_on")
 					sendVideoMessage(sender, messages[i].video)
 				}
+			} else if(messages[i].type == "facebook_image"){
+				sendImage(sender, messages[i].image)
 			} else if(messages[i].type == "facebook_quick_reply") {
 				sendQuickReply(sender, messages[i].quickReply)
 			} else if(messages[i].type == "facebook_button") {
@@ -438,6 +440,30 @@ function sendQuickReply(sender, data) {
 		  //     }
 		  //   ]
 		  // }
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
+function sendImage(sender, data) {
+	let messageData = {
+		"attachment": {
+			"type": "image",
+			"payload": data
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
 		}
 	}, function(error, response, body) {
 		if (error) {
