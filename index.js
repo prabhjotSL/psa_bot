@@ -579,38 +579,43 @@ function sendInstructions(sender) {
 			"payload": {
 				"template_type": "generic",
 				"elements": [{
+					"title": "Cheque Related Queries",
 					"image_url": "https://cdn2.techworld.com/cmsdata/features/3590133/Cheque_thumb800.jpg",
 					"buttons": [{
 						"type": "postback",
-						"title": "Cheque Related Queries",
+						"title": "Ask Now",
 						"payload": "cheque",
 					}],
 				}, {
+					"title": "Account Related Queries",
 					"image_url": "https://static.standard.co.uk/s3fs-public/thumbnails/image/2015/10/30/20/Barclays3010c.jpg",
 					"buttons": [{
 						"type": "postback",
-						"title": "Account Related Queries",
+						"title": "Ask Now",
 						"payload": "account",
 					}],
 				}, {
+					"title": "Payments or Transactions",
 					"image_url": "http://iamnewtolondon.com/barclaysassets/last7transactions.jpg",
 					"buttons": [{
 						"type": "postback",
-						"title": "Payments or Transactions",
+						"title": "Ask Now",
 						"payload": "payments",
 					}],
 				}, {
+					"title": "Direct Debits",
 					"image_url": "https://d13yacurqjgara.cloudfront.net/users/270549/screenshots/1186023/iphonetransactions_1x.jpg",
 					"buttons": [{
 						"type": "postback",
-						"title": "Direct Debits",
+						"title": "Ask Now",
 						"payload": "Direct Debits",
 					}],
 				}, {
+					"title": "Debit and Credit Cards",
 					"image_url": "https://home.barclaycardus.com/content/dam/bcuspublic/card-plastic/card-angled/apple2_ns.png",
 					"buttons": [{
 						"type": "postback",
-						"title": "Debit and Credit Cards",
+						"title": "Ask Now",
 						"payload": "card",
 					}],
 				}]
