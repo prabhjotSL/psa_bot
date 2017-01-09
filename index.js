@@ -79,6 +79,7 @@ app.post('/webhook/', function (req, res) {
 			if(event.message.text == "reset") {
 				if(rooms[sender]) {
 					rooms[sender].isBotEnabled = true
+					rooms[sender].room_id = null
 				}
 			} else if(rooms[sender] && !rooms[sender].isBotEnabled) {
 				sendSingleMessageToImichat(sender, event.message.text, rooms[sender].room_id)
