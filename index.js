@@ -97,7 +97,8 @@ app.post('/webhook/', function (req, res) {
 			if(rooms[sender] && !rooms[sender].isBotEnabled) {
 				sendSingleMessageToImichat(sender, text)
 			} else if(event.postback.payload == "einstein") {
-				sendTextMessage(sender, "Hi, I'm Alex from Barclays Bank. I can help you with queries related to your account, cheques, payments & transactions, direct debits, debit and credit cards.")
+				sendTextMessage(sender, "Hi, I'm Alex from Barclays Bank. I can help you with the following queries:")
+				sendInstructions(sender)
 			} else if(event.postback.payload == "newton") {
 
 			} else if(event.postback.payload == "plato") {
@@ -552,6 +553,68 @@ function sendDynamicMessage(sender, data) {
 		"attachment": {
 			"type": "template",
 			"payload": data
+		}
+	}
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
+function sendInstructions(sender) {
+	let messageData = {
+		"attachment": {
+			"type": "template",
+			"payload": {
+				"template_type": "generic",
+				"elements": [{
+					"image_url": "https://cdn2.techworld.com/cmsdata/features/3590133/Cheque_thumb800.jpg",
+					"buttons": [{
+						"type": "postback",
+						"title": "Cheque Related Queries",
+						"payload": "cheque",
+					}],
+				}, {
+					"image_url": "https://static.standard.co.uk/s3fs-public/thumbnails/image/2015/10/30/20/Barclays3010c.jpg",
+					"buttons": [{
+						"type": "postback",
+						"title": "Account Related Queries",
+						"payload": "account",
+					}],
+				}, {
+					"image_url": "http://iamnewtolondon.com/barclaysassets/last7transactions.jpg",
+					"buttons": [{
+						"type": "postback",
+						"title": "Payments or Transactions",
+						"payload": "payments",
+					}],
+				}, {
+					"image_url": "https://d13yacurqjgara.cloudfront.net/users/270549/screenshots/1186023/iphonetransactions_1x.jpg",
+					"buttons": [{
+						"type": "postback",
+						"title": "Direct Debits",
+						"payload": "Direct Debits",
+					}],
+				}, {
+					"image_url": "https://home.barclaycardus.com/content/dam/bcuspublic/card-plastic/card-angled/apple2_ns.png",
+					"buttons": [{
+						"type": "postback",
+						"title": "Debit and Credit Cards",
+						"payload": "card",
+					}],
+				}]
+			}
 		}
 	}
 	request({
