@@ -229,13 +229,14 @@ function sendMessagesToImichat(sender, body, messages) {
 		json: reqBody
 	}, function(error, response, output) {
 		console.log("GOT A RESPONSE BACK!!")
-		console.log(error, response, output)
+		console.log(error, output)
 		if (error) {
 			console.log('Error sending messages to IMIChat: ', error)
 			sendTextMessage(sender, "Sorry I will connect you to our customer support executive.")
 		}	else {
 			// console.log("Sending message of customer agent back to the bot: ", body, sender)
 			rooms[body.consumer.facebookId].isBotEnabled = false
+			console.log(body.generated_msg)
 			var msg = body.generated_msg.texts ? body.generated_msg.texts[randomInt(0,body.generated_msg.texts.length)] : body.generated_msg
 			sendTextMessage(sender, msg)
 		}
