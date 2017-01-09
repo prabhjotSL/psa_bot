@@ -271,6 +271,9 @@ function sendMessages(messages, i, sender) {
 				sendQuickReply(sender, messages[i].quickReply)
 			} else if(messages[i].type == "facebook_button") {
 				sendDynamicMessage(sender, messages[i].buttons)
+			} else if(messages[i].type == "facebook_instruction") {
+				sendTextMessage(sender, "Hi, I'm Alex from Barclays Bank. I can help you with the following queries:")
+				sendInstructions(sender)
 			} else {
 					// Change i and try the next message.
 					// sendTextMessage(sender, messages[i].text)
