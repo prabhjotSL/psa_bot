@@ -82,7 +82,14 @@ app.post('/webhook/', function (req, res) {
 				}
 			} else if(rooms[sender] && !rooms[sender].isBotEnabled) {
 				sendSingleMessageToImichat(sender, event.message.text, rooms[sender].room_id)
+			} else if(event.message.text == "einstein") {
+				sendTextMessage(sender, "Hi, I'm Alex from Barclays Bank. I can help you with queries related to your account, cheques, payments & transactions, direct debits, debit and credit cards.")
+			} else if(event.message.text == "newton") {
+
+			} else if(event.message.text == "plato") {
+
 			} else {
+				console.log(event.message.text)
 				sendSenderAction(sender, "mark_seen")
 				sendSenderAction(sender, "typing_on")
 				sendAPICall(event.message.text, sender)
@@ -91,8 +98,15 @@ app.post('/webhook/', function (req, res) {
 		}
 		else if (event.postback) {
 			let text = JSON.stringify(event.postback)
+			console.log("POSTBACK: ", text)
 			if(rooms[sender] && !rooms[sender].isBotEnabled) {
 				sendSingleMessageToImichat(sender, text)
+			} else if(event.message.text == "einstein") {
+				sendTextMessage(sender, "Hi, I'm Alex from Barclays Bank. I can help you with queries related to your account, cheques, payments & transactions, direct debits, debit and credit cards.")
+			} else if(event.message.text == "newton") {
+
+			} else if(event.message.text == "plato") {
+
 			} else {
 				sendSenderAction(sender, "mark_seen")
 				sendSenderAction(sender, "typing_on")
@@ -362,28 +376,18 @@ function setPersistentMenu() {
 			call_to_actions:[
 		    {
 		      "type":"postback",
-		      "title":"Cheque related queries",
-		      "payload":"cheque"
+		      "title":"How can you help me",
+		      "payload":"einstein"
 		    },
 		    {
 		      "type":"postback",
-		      "title":"Payment and Transactions",
-		      "payload":"payments and transactions"
+		      "title":"Our Purpose and Values",
+		      "payload":"newton"
 		    },
 				{
 		      "type":"postback",
-		      "title":"Account related queries",
-		      "payload":"account"
-		    },
-				{
-		      "type":"postback",
-		      "title":"Direct Debit",
-		      "payload":"direct debit"
-		    },
-				{
-		      "type":"postback",
-		      "title":"Debit/Credit Card",
-		      "payload":"card"
+		      "title":"Our History",
+		      "payload":"plato"
 		    }
 		  ]
 		}
