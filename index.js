@@ -101,8 +101,10 @@ app.post('/webhook/', function (req, res) {
 				sendInstructions(sender)
 			} else if(event.postback.payload == "newton") {
 				sendTextMessage(sender, "We help people achieve their ambitions – in the right way. This sits at the core of our business and underpins everything that we do.")
-				sendTextMessage(sender, "Let me show you a video showcasing our values:")
-				sendSenderAction(sender, "typing_on")
+				setTimeout(function() {
+					sendTextMessage(sender, "Let me show you a video showcasing our values:")
+					sendSenderAction(sender, "typing_on")
+				}, 500)
 				sendVideoMessage(sender, {"url": "https://ancient-fjord-82489.herokuapp.com/values.mp4"})
 				setTimeout(function() {
 					sendSenderAction(sender, "typing_off")
