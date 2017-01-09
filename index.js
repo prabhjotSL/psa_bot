@@ -82,12 +82,6 @@ app.post('/webhook/', function (req, res) {
 				}
 			} else if(rooms[sender] && !rooms[sender].isBotEnabled) {
 				sendSingleMessageToImichat(sender, event.message.text, rooms[sender].room_id)
-			} else if(event.message.text == "einstein") {
-				sendTextMessage(sender, "Hi, I'm Alex from Barclays Bank. I can help you with queries related to your account, cheques, payments & transactions, direct debits, debit and credit cards.")
-			} else if(event.message.text == "newton") {
-
-			} else if(event.message.text == "plato") {
-
 			} else {
 				console.log(event.message.text)
 				sendSenderAction(sender, "mark_seen")
@@ -101,11 +95,11 @@ app.post('/webhook/', function (req, res) {
 			console.log("POSTBACK: ", text)
 			if(rooms[sender] && !rooms[sender].isBotEnabled) {
 				sendSingleMessageToImichat(sender, text)
-			} else if(event.message.text == "einstein") {
+			} else if(text.payload == "einstein") {
 				sendTextMessage(sender, "Hi, I'm Alex from Barclays Bank. I can help you with queries related to your account, cheques, payments & transactions, direct debits, debit and credit cards.")
-			} else if(event.message.text == "newton") {
+			} else if(text.payload == "newton") {
 
-			} else if(event.message.text == "plato") {
+			} else if(text.payload == "plato") {
 
 			} else {
 				sendSenderAction(sender, "mark_seen")
