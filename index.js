@@ -258,7 +258,7 @@ function sendMessages(messages, i, sender) {
 		setTimeout(function() {
 			sendSenderAction(sender, "typing_off")
 			sendMessages(messages, i, sender)
-		}, 1000)
+		}, 2000)
 	}
 }
 
