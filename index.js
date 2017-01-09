@@ -243,7 +243,7 @@ function sendMessages(messages, i, sender) {
 					sendVideoMessage(sender, messages[i].video)
 				}
 			} else if(messages[i].type == "facebook_quick_reply") {
-				sendQuickReply(sender, messages[i].quick_reply)
+				sendQuickReply(sender, messages[i].quickReply)
 			} else if(messages[i].type == "facebook_button") {
 				sendDynamicMessage(sender, messages[i].buttons)
 			} else {
