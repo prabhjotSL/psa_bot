@@ -327,7 +327,7 @@ function sendAPICall(text, sender) {
 
 			var enableIMIChatIntegration = false
 
-			if(!rooms[body.consumer.facebookId]) {
+			if(!rooms[body.consumer.facebookId]) { 
 				rooms[body.consumer.facebookId] = {}
 				rooms[body.consumer.facebookId].room_id = body.room._id // This has to be stored and retrieved from Mongo and not in Memory.
 				rooms[body.consumer.facebookId].isBotEnabled = true
