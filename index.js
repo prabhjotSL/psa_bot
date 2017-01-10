@@ -248,48 +248,52 @@ function sendMessagesToImichat(sender, body, messages) {
 
 function sendMessages(messages, i, sender) {
 	console.log(messages, i)
-	if(i < messages.length) {
-		if(messages[i].type) {
-			if(messages[i].type == "facebook_text") {
-				// Only Text
-				var randomNumber = randomInt(0, messages[i].texts.length)
-				sendTextMessage(sender, messages[i].texts[randomNumber])
-			} else if(messages[i].type == "facebook_audio") {
-				// Text + Audio
-				var randomNumber = randomInt(0,messages[i].texts.length)
-				sendTextMessage(sender, messages[i].texts[randomNumber])
-				if(messages[i].audio) {
-					sendAudioMessage(sender, messages[i].audio[randomNumber])
+	if(typeof messages == "string") {
+		sendTextMessage(sender, messages)
+	} else {
+		if(i < messages.length) {
+			if(messages[i].type) {
+				if(messages[i].type == "facebook_text") {
+					// Only Text
+					var randomNumber = randomInt(0, messages[i].texts.length)
+					sendTextMessage(sender, messages[i].texts[randomNumber])
+				} else if(messages[i].type == "facebook_audio") {
+					// Text + Audio
+					var randomNumber = randomInt(0,messages[i].texts.length)
+					sendTextMessage(sender, messages[i].texts[randomNumber])
+					if(messages[i].audio) {
+						sendAudioMessage(sender, messages[i].audio[randomNumber])
+					}
+				} else if(messages[i].type == "facebook_video") {
+					var randomNumber = randomInt(0, messages[i].texts.length)
+					sendTextMessage(sender, messages[i].texts[randomNumber])
+					if(messages[i].video) {
+						sendSenderAction(sender, "typing_on")
+						sendVideoMessage(sender, messages[i].video)
+					}
+				} else if(messages[i].type == "facebook_image"){
+					sendImage(sender, messages[i].image)
+				} else if(messages[i].type == "facebook_quick_reply") {
+					sendQuickReply(sender, messages[i].quickReply)
+				} else if(messages[i].type == "facebook_button") {
+					sendDynamicMessage(sender, messages[i].buttons)
+				} else if(messages[i].type == "facebook_instruction") {
+					sendTextMessage(sender, "Hi, I'm Alex from Barclays Bank. I can help you with the following queries:")
+					sendInstructions(sender)
+				} else {
+						// Change i and try the next message.
+						// sendTextMessage(sender, messages[i].text)
 				}
-			} else if(messages[i].type == "facebook_video") {
-				var randomNumber = randomInt(0, messages[i].texts.length)
-				sendTextMessage(sender, messages[i].texts[randomNumber])
-				if(messages[i].video) {
-					sendSenderAction(sender, "typing_on")
-					sendVideoMessage(sender, messages[i].video)
-				}
-			} else if(messages[i].type == "facebook_image"){
-				sendImage(sender, messages[i].image)
-			} else if(messages[i].type == "facebook_quick_reply") {
-				sendQuickReply(sender, messages[i].quickReply)
-			} else if(messages[i].type == "facebook_button") {
-				sendDynamicMessage(sender, messages[i].buttons)
-			} else if(messages[i].type == "facebook_instruction") {
-				sendTextMessage(sender, "Hi, I'm Alex from Barclays Bank. I can help you with the following queries:")
-				sendInstructions(sender)
 			} else {
-					// Change i and try the next message.
-					// sendTextMessage(sender, messages[i].text)
+				// Change i and try the next message.
 			}
-		} else {
-			// Change i and try the next message.
+			i += 1
+			sendSenderAction(sender, "typing_on")
+			setTimeout(function() {
+				sendSenderAction(sender, "typing_off")
+				sendMessages(messages, i, sender)
+			}, 2000)
 		}
-		i += 1
-		sendSenderAction(sender, "typing_on")
-		setTimeout(function() {
-			sendSenderAction(sender, "typing_off")
-			sendMessages(messages, i, sender)
-		}, 2000)
 	}
 }
 
@@ -327,7 +331,7 @@ function sendAPICall(text, sender) {
 
 			var enableIMIChatIntegration = false
 
-			if(!rooms[body.consumer.facebookId]) { 
+			if(!rooms[body.consumer.facebookId]) {
 				rooms[body.consumer.facebookId] = {}
 				rooms[body.consumer.facebookId].room_id = body.room._id // This has to be stored and retrieved from Mongo and not in Memory.
 				rooms[body.consumer.facebookId].isBotEnabled = true
