@@ -104,7 +104,7 @@ app.post('/webhook/', function (req, res) {
 					sendTextMessage(sender, "Let me show you a video showcasing our values..")
 					sendSenderAction(sender, "typing_on")
 				}, 500)
-				sendVideoMessage(sender, {"url": "https://ancient-fjord-82489.herokuapp.com/values.mp4"})
+				sendVideoMessage(sender, {"url": "https://storage.googleapis.com/barclays_faq/values.mp4"})
 				setTimeout(function() {
 					sendSenderAction(sender, "typing_off")
 				}, 5000)
