@@ -331,7 +331,7 @@ function sendAPICall(text, sender) {
 				rooms[body.consumer.facebookId] = {}
 				rooms[body.consumer.facebookId].room_id = body.room._id // This has to be stored and retrieved from Mongo and not in Memory.
 				rooms[body.consumer.facebookId].isBotEnabled = true
-			} 
+			}
 			if(body.sendtoagent && enableIMIChatIntegration) {
 				// Here we will send all the messages of the room (max 15), to imichat, and on confirmation of that send a message to user saying connected to an agent.
 				// If the imichat api call fails, then send a message saying we will get back to you soon, our customer executives are busy.
