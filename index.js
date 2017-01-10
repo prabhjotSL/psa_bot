@@ -379,9 +379,52 @@ function sendAPICall(text, sender) {
 				// 	sendTextMessage(sender, body.generated_msg)
 				// }
 			} else {
-				sendTextMessage(sender, "No Response")
+				sendTextMessage(sender, "Alright, let me direct you to the best person to handle your query. We will get back to you shortly.")
 			}
 			// sendTextMessage(sender, body.generated_msg || "No Response")
+		}
+	})
+}
+
+function setDefaultMessage() {
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			"setting_type":"greeting",
+		  "greeting":{
+		    "text":"Hi {{user_first_name}}, a copy of this chat will be recorded and stored by Barclays and Facebook. Please do not disclose any personal or account information, such as a password or card number, when using this service."
+		  }
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
+}
+
+function setGreetingText() {
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			"setting_type":"call_to_actions",
+		  "thread_state":"new_thread",
+		  "call_to_actions":[
+		    {
+		      "payload":"einstein"
+		    }
+		  ]
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
 		}
 	})
 }
@@ -714,6 +757,8 @@ function sendGenericMessage(sender, data) {
 }
 
 setPersistentMenu()
+setDefaultMessage()
+setGreetingText()
 
 // spin spin sugar
 app.listen(app.get('port'), function() {
