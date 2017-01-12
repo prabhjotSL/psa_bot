@@ -358,8 +358,9 @@ function sendAPICall(text, sender) {
 						sendTextMessage(sender, "Alright, let me direct you to the best person to handle your query. We will get back to you shortly.")
 					}
 					// sendTextMessage(sender, body.generated_msg || "No Response")
-				}
+
 			})
+		}
 	})
 }
 
