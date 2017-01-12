@@ -321,7 +321,6 @@ function sendAPICall(text, sender) {
 			room_id: rooms[sender] ? rooms[sender].room_id : null
 		}
 	}, function(error, response, body) {
-		sendSenderAction(sender, "typing_off")
 		if (error) {
 			console.log('Error sending messages: ', error)
 		} else if (response.body.error) {
@@ -333,10 +332,11 @@ function sendAPICall(text, sender) {
 				headers: {
 					"api-key": "54asdkj1209nksnda"
 				}
-			}, function(error, response, body) {
+			}, function(error, response, body_imichat) {
+					sendSenderAction(sender, "typing_off")
 					console.log(body) // Show the HTML for the Google homepage.
 
-					var enableIMIChatIntegration = body.status || false
+					var enableIMIChatIntegration = body_imichat.status || false
 
 					if(!rooms[body.consumer.facebookId]) {
 						rooms[body.consumer.facebookId] = {}
