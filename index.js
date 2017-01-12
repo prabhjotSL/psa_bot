@@ -327,64 +327,74 @@ function sendAPICall(text, sender) {
 		} else if (response.body.error) {
 			console.log('Error: ', response.body.error)
 		} else if (!error && response.statusCode == 200) {
-			console.log(body) // Show the HTML for the Google homepage.
+			request({
+				url: 'http://botman.ai/api/v1/bots/imichatstatus/584e90ca275cbe37db390ffa',
+				method: 'GET',
+				headers: {
+					"api-key": "54asdkj1209nksnda"
+				}
+			}, function(error, response, body) {
+					console.log(body) // Show the HTML for the Google homepage.
 
-			var enableIMIChatIntegration = false
+					var enableIMIChatIntegration = body.status || false
 
-			if(!rooms[body.consumer.facebookId]) {
-				rooms[body.consumer.facebookId] = {}
-				rooms[body.consumer.facebookId].room_id = body.room._id // This has to be stored and retrieved from Mongo and not in Memory.
-				rooms[body.consumer.facebookId].isBotEnabled = true
-			}
-			if(body.sendtoagent && enableIMIChatIntegration) {
-				// Here we will send all the messages of the room (max 15), to imichat, and on confirmation of that send a message to user saying connected to an agent.
-				// If the imichat api call fails, then send a message saying we will get back to you soon, our customer executives are busy.
-				// Send is isBotEnabled to false. So next time the message can go to imichat.
-				sendMessagesToImichat(sender, body, body.messages)
-				// rooms[body.consumer.facebookId].isBotEnabled = false
-			}
-			else if(body.generated_msg) {
-				// We get a facebook array here.
-				sendMessages(body.generated_msg, 0, sender)
-				// if(body.generated_msg.type) {
-				// 	if(body.generated_msg.type == "facebook_button") {
-				// 		sendDynamicMessage(sender, body.generated_msg.buttons)
-				// 		if(body.generated_msg.audio) {
-				// 			sendAudioMessage(sender, body.generated_msg.audio)
-				// 		}
-				// 	} // other cases come here like audio, quick_reply, etc.
-				// 	else if(body.generated_msg.type == "facebook_text") {
-				// 		var randomNumber = randomInt(0,body.generated_msg.texts.length)
-				// 		sendTextMessage(sender, body.generated_msg.texts[randomNumber])
-				// 		if(body.generated_msg.audio) {
-				// 			sendAudioMessage(sender, body.generated_msg.audio[randomNumber])
-				// 		}
-				// 	}
-				// 	else if(body.generated_msg.type == "facebook_audio") {
-				// 		var randomNumber = randomInt(0,body.generated_msg.texts.length)
-				// 		sendTextMessage(sender, body.generated_msg.texts[randomNumber])
-				// 		if(body.generated_msg.audio) {
-				// 			sendAudioMessage(sender, body.generated_msg.audio[randomNumber])
-				// 		}
-				// 	}
-				// 	else if(body.generated_msg.type == "facebook_video") {
-				// 		var randomNumber = randomInt(0, body.generated_msg.texts.length)
-				// 		sendTextMessage(sender, body.generated_msg.texts[randomNumber])
-				// 		if(body.generated_msg.video) {
-				// 			sendSenderAction(sender, "typing_on")
-				// 			sendVideoMessage(sender, body.generated_msg.video)
-				// 		}
-				// 	}
-				// } else {
-				// 	sendTextMessage(sender, body.generated_msg)
-				// }
-			} else {
-				sendTextMessage(sender, "Alright, let me direct you to the best person to handle your query. We will get back to you shortly.")
-			}
-			// sendTextMessage(sender, body.generated_msg || "No Response")
-		}
+					if(!rooms[body.consumer.facebookId]) {
+						rooms[body.consumer.facebookId] = {}
+						rooms[body.consumer.facebookId].room_id = body.room._id // This has to be stored and retrieved from Mongo and not in Memory.
+						rooms[body.consumer.facebookId].isBotEnabled = true
+					}
+					if(body.sendtoagent && enableIMIChatIntegration) {
+						// Here we will send all the messages of the room (max 15), to imichat, and on confirmation of that send a message to user saying connected to an agent.
+						// If the imichat api call fails, then send a message saying we will get back to you soon, our customer executives are busy.
+						// Send is isBotEnabled to false. So next time the message can go to imichat.
+						sendMessagesToImichat(sender, body, body.messages)
+						// rooms[body.consumer.facebookId].isBotEnabled = false
+					}
+					else if(body.generated_msg) {
+						// We get a facebook array here.
+						sendMessages(body.generated_msg, 0, sender)
+
+					} else {
+						sendTextMessage(sender, "Alright, let me direct you to the best person to handle your query. We will get back to you shortly.")
+					}
+					// sendTextMessage(sender, body.generated_msg || "No Response")
+				}
+			})
 	})
 }
+
+// if(body.generated_msg.type) {
+// 	if(body.generated_msg.type == "facebook_button") {
+// 		sendDynamicMessage(sender, body.generated_msg.buttons)
+// 		if(body.generated_msg.audio) {
+// 			sendAudioMessage(sender, body.generated_msg.audio)
+// 		}
+// 	} // other cases come here like audio, quick_reply, etc.
+// 	else if(body.generated_msg.type == "facebook_text") {
+// 		var randomNumber = randomInt(0,body.generated_msg.texts.length)
+// 		sendTextMessage(sender, body.generated_msg.texts[randomNumber])
+// 		if(body.generated_msg.audio) {
+// 			sendAudioMessage(sender, body.generated_msg.audio[randomNumber])
+// 		}
+// 	}
+// 	else if(body.generated_msg.type == "facebook_audio") {
+// 		var randomNumber = randomInt(0,body.generated_msg.texts.length)
+// 		sendTextMessage(sender, body.generated_msg.texts[randomNumber])
+// 		if(body.generated_msg.audio) {
+// 			sendAudioMessage(sender, body.generated_msg.audio[randomNumber])
+// 		}
+// 	}
+// 	else if(body.generated_msg.type == "facebook_video") {
+// 		var randomNumber = randomInt(0, body.generated_msg.texts.length)
+// 		sendTextMessage(sender, body.generated_msg.texts[randomNumber])
+// 		if(body.generated_msg.video) {
+// 			sendSenderAction(sender, "typing_on")
+// 			sendVideoMessage(sender, body.generated_msg.video)
+// 		}
+// 	}
+// } else {
+// 	sendTextMessage(sender, body.generated_msg)
+// }
 
 function setDefaultMessage() {
 	request({
