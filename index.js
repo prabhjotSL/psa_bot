@@ -9,7 +9,7 @@ const ankurid = "1496704427010794"
 const prabhjotid = "1069317166466636"
 
 let rooms = {} // {"facebook_id": {room_id: room_id, isBotEnabled: true}}
- 
+
 app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
@@ -48,10 +48,12 @@ app.post('/imichatclosed', function(req, res) {
 	// this means that the chat has been closed in imichat and we need to reset isBotEnabled to true.
 	// var chatID = req.headers["Chatid"]
 	// console.log(chatID)
-	rooms[ankurid].isBotEnabled = true // TODO: Change this ID to ID of ALEX.
-	setTimeout(function() {
-		res.json({success: true})
-	}, 1000)
+	if(room[ankurid]) {
+		rooms[ankurid].isBotEnabled = true // TODO: Change this ID to ID of ALEX.
+		setTimeout(function() {
+			res.json({success: true})
+		}, 1000)
+	}
 })
 
 // for facebook verification
