@@ -8,6 +8,7 @@ const app = express()
 const ankurid = "1496704427010794"
 const prabhjotid = "1069317166466636"
 const adityaid = "1172241892854277"
+const alexid = "1277278815679799"
 
 let rooms = {} // {"facebook_id": {room_id: room_id, isBotEnabled: true}}
 
@@ -31,7 +32,7 @@ app.post('/imichatmt', function(req, res) {
 	// console.log(req.headers)
 	var message = req.body.channels["OTT-Messaging"].fb.text
 	var psid = req.body.destination[0].psid[0]
-	sendTextMessage(adityaid, message) // Change this PSID to PSID of the demo messenger client.
+	sendTextMessage(ankurid, message) // Change this PSID to PSID of the demo messenger client.
 	setTimeout(function() {
 		res.json({
 			"response":[{
@@ -49,8 +50,8 @@ app.post('/imichatclosed', function(req, res) {
 	// this means that the chat has been closed in imichat and we need to reset isBotEnabled to true.
 	// var chatID = req.headers["Chatid"]
 	// console.log(chatID)
-	if(rooms[adityaid]) {
-		rooms[adityaid].isBotEnabled = true // TODO: Change this ID to ID of ALEX.
+	if(rooms[ankurid]) {
+		rooms[ankurid].isBotEnabled = true // TODO: Change this ID to ID of ALEX.
 		setTimeout(function() {
 			res.json({success: true})
 		}, 1000)
@@ -346,14 +347,14 @@ function sendAPICall(text, sender) {
 
 					var enableIMIChatIntegration = body_imichat.status
 					enableIMIChatIntegration = JSON.parse(body_imichat).status
-					console.log("GOT IMIChat Status", sender, adityaid, body_imichat, typeof body_imichat, enableIMIChatIntegration)
+					console.log("GOT IMIChat Status", sender, ankurid, body_imichat, typeof body_imichat, enableIMIChatIntegration)
 
 					if(!rooms[body.consumer.facebookId]) {
 						rooms[body.consumer.facebookId] = {}
 						rooms[body.consumer.facebookId].room_id = body.room._id // This has to be stored and retrieved from Mongo and not in Memory.
 						rooms[body.consumer.facebookId].isBotEnabled = true
 					}
-					if(body.sendtoagent && sender == adityaid && enableIMIChatIntegration) {
+					if(body.sendtoagent && sender == ankurid && enableIMIChatIntegration) {
 						// Here we will send all the messages of the room (max 15), to imichat, and on confirmation of that send a message to user saying connected to an agent.
 						// If the imichat api call fails, then send a message saying we will get back to you soon, our customer executives are busy.
 						// Send is isBotEnabled to false. So next time the message can go to imichat.
