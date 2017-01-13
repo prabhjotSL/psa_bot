@@ -53,6 +53,8 @@ app.post('/imichatclosed', function(req, res) {
 		setTimeout(function() {
 			res.json({success: true})
 		}, 1000)
+	} else {
+		res.json({success: true})
 	}
 })
 
