@@ -30,7 +30,7 @@ app.post('/imichatmt', function(req, res) {
 	// console.log(req.headers)
 	var message = req.body.channels["OTT-Messaging"].fb.text
 	var psid = req.body.destination[0].psid[0]
-	sendTextMessage(prabhjotid, message) // Change this PSID to PSID of the demo messenger client.
+	sendTextMessage(ankurid, message) // Change this PSID to PSID of the demo messenger client.
 	setTimeout(function() {
 		res.json({
 			"response":[{
@@ -48,7 +48,7 @@ app.post('/imichatclosed', function(req, res) {
 	// this means that the chat has been closed in imichat and we need to reset isBotEnabled to true.
 	// var chatID = req.headers["Chatid"]
 	// console.log(chatID)
-	rooms[prabhjotid].isBotEnabled = true // TODO: Change this ID to ID of ALEX.
+	rooms[ankurid].isBotEnabled = true // TODO: Change this ID to ID of ALEX.
 	setTimeout(function() {
 		res.json({success: true})
 	}, 1000)
