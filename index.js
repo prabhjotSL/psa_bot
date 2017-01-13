@@ -336,7 +336,7 @@ function sendAPICall(text, sender) {
 					sendSenderAction(sender, "typing_off")
 					console.log(body) // Show the HTML for the Google homepage.
 
-					var enableIMIChatIntegration = body_imichat.status || false
+					var enableIMIChatIntegration = body_imichat.status
 					console.log("GOT IMIChat Status", body_imichat, enableIMIChatIntegration)
 
 					if(!rooms[body.consumer.facebookId]) {
