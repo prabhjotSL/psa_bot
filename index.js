@@ -48,7 +48,7 @@ app.post('/imichatclosed', function(req, res) {
 	// this means that the chat has been closed in imichat and we need to reset isBotEnabled to true.
 	// var chatID = req.headers["Chatid"]
 	// console.log(chatID)
-	if(room[ankurid]) {
+	if(rooms[ankurid]) {
 		rooms[ankurid].isBotEnabled = true // TODO: Change this ID to ID of ALEX.
 		setTimeout(function() {
 			res.json({success: true})
