@@ -7,7 +7,8 @@ const app = express()
 
 const ankurid = "1496704427010794"
 const prabhjotid = "1069317166466636"
-const adityaid = "1172241892854277"
+// const adityaid = "1172241892854277"
+const adityaid = "1383813328329550"
 const alexid = "1277278815679799"
 
 let rooms = {} // {"facebook_id": {room_id: room_id, isBotEnabled: true}}
@@ -419,7 +420,7 @@ function setDefaultMessage() {
 			"setting_type":"greeting",
 		  "greeting":{
 		    "text":"Hi {{user_first_name}}, a copy of this chat will be recorded and stored by Barclays and Facebook. Please do not disclose any personal or account information, such as a password or card number, when using this service."
-		  } 
+		  }
 		}
 	}, function(error, response, body) {
 		if (error) {
