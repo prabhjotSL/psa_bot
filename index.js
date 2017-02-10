@@ -162,7 +162,7 @@ function sendSingleMessageToImichat(sender, message, roomId) {
 	}
 	// console.log(reqParams)
 	request({
-		url: "https://notify.imichat.io/ngmp2chat/imiconnectFB.aspx?teamid=12&servicekey=B2160D34-E8D5-4C7A-A7A4-E2367F1ED2E2",
+		url: "https://notify.imi.chat/ngmp2chat/imiconnectFB.aspx?teamid=12&servicekey=B2160D34-E8D5-4C7A-A7A4-E2367F1ED2E2",
 		// params: reqParams,
 		headers: {
 			'content-type': 'application/json'
@@ -234,9 +234,9 @@ function sendMessagesToImichat(sender, body, messages) {
 	}
 
 	request({
-		url: 'https://demo.imichat.io/chatapi/createchat',
+		url: 'https://botman.imi.chat/chatapi/createchat',
 		headers: {
-			'X-IMI-AUTHKEY': '67183aaf-b7e8-422e-afc3-eb4cacc214fe',
+			'X-IMI-AUTHKEY': 'bec48fce-0fd7-4b17-b54b-712427409d84',
 			'content-type': 'application/json'
 		},
 		method: 'POST',
