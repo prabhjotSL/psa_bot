@@ -158,12 +158,12 @@ function sendSingleMessageToImichat(sender, message, roomId) {
 	}
 	// console.log(reqBody)
 	var reqParams = {
-		teamid: 12,
-		servicekey: "B2160D34-E8D5-4C7A-A7A4-E2367F1ED2E2"
+		teamid: 84,
+		servicekey: "00891DDF-D8E4-4398-AEA9-76B75151A484"
 	}
 	// console.log(reqParams)
 	request({
-		url: "https://notify.imi.chat/ngmp2chat/imiconnectFB.aspx?teamid=12&servicekey=B2160D34-E8D5-4C7A-A7A4-E2367F1ED2E2",
+		url: "https://notify.imi.chat/ngmp2chat/imiconnectfb.aspx?teamid=84&servicekey=00891DDF-D8E4-4398-AEA9-76B75151A484",
 		// params: reqParams,
 		headers: {
 			'content-type': 'application/json'
