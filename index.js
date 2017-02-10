@@ -8,7 +8,8 @@ const app = express()
 const ankurid = "1496704427010794"
 const prabhjotid = "1069317166466636"
 // const adityaid = "1172241892854277"
-const adityaid = "1383813328329550"
+// const adityaid = "1383813328329550"
+const adityaid = "1069317166466636"
 const alexid = "1277278815679799"
 
 let rooms = {} // {"facebook_id": {room_id: room_id, isBotEnabled: true}}
