@@ -324,7 +324,8 @@ function sendAPICall(text, sender) {
 		},
 		json: {
 			// bot_id: "583a94490ffe3461496a8f4c", // PSA bot
-			bot_id: "584e90ca275cbe37db390ffa", // Barclays bot
+			// bot_id: "584e90ca275cbe37db390ffa", // Barclays bot
+			bot_id: "589da03d4b458a044b9ff5c3", // Barclays Bot on new user account.
 			consumer: {
 				facebookId: sender
 			},
@@ -340,7 +341,7 @@ function sendAPICall(text, sender) {
 			console.log('Error: ', response.body.error)
 		} else if (!error && response.statusCode == 200) {
 			request({
-				url: 'http://botman.ai/api/v1/bots/imichatstatus/584e90ca275cbe37db390ffa',
+				url: 'http://botman.ai/api/v1/bots/imichatstatus/589da03d4b458a044b9ff5c3',
 				method: 'GET',
 				headers: {
 					"api-key": "54asdkj1209nksnda"
