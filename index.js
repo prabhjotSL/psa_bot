@@ -77,7 +77,7 @@ app.post('/login', function(req, res) {
 
 	let access_token = "alskdnl12kennl1k"
 
-	let final_uri = redirect_uri + "#access_token=" + access_token + "&state=" + state + "&token_type=" + token_type
+	let final_uri = redirect_uri + "#access_token=" + access_token + "&state=" + state + "&token_type=Bearer"
 	// res.sendFile(__dirname + '/success.html')
 	res.redirect(final_uri)
 })
