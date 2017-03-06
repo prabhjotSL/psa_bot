@@ -66,7 +66,7 @@ app.post('/imichatclosed', function(req, res) {
 app.get('/oauth', function(req, res) {
 	console.log(req.query)
 	console.log(req.body)
-	res.send('./audio/login.html')
+	res.sendFile('./audio/login.html')
 })
 
 // for facebook verification
