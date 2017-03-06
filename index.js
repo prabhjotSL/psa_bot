@@ -65,8 +65,8 @@ app.post('/imichatclosed', function(req, res) {
 
 let users = [
 	{email: "aditya.c@imimobile.com", password: "qwerty", passcode: "345637", token: "181iasjd192kjksnd918ekajsn91822ne91wd"},
-	{email: "siva.b@imimobile.com", password: "qwerty", passcode: "631247", token: "181iasjd192kjks1oiwn1dklsk1oism1doi1md"},
-	{email: "alex@imimobile.com", password: "qwerty", passcode: "097642", token: "181iasjd192kjksni1sudiu1miub1sd99wd98uw"}
+	{email: "siva.b@imimobile.com", password: "qwerty", passcode: "636287", token: "181iasjd192kjks1oiwn1dklsk1oism1doi1md"},
+	{email: "alex@imimobile.com", password: "qwerty", passcode: "097692", token: "181iasjd192kjksni1sudiu1miub1sd99wd98uw"}
 ]
 
 app.post('/login', function(req, res) {
