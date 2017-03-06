@@ -63,6 +63,12 @@ app.post('/imichatclosed', function(req, res) {
 	}
 })
 
+app.get('/oauth', function(req, res) {
+	console.log(req.query)
+	console.log(req.body)
+	res.send('./audio/login.html')
+})
+
 // for facebook verification
 app.get('/webhook/', function (req, res) {
 	if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
