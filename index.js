@@ -66,7 +66,7 @@ app.post('/imichatclosed', function(req, res) {
 app.post('/login', function(req, res) {
 	console.log("QUERY",req.query)
 	console.log("BODY",req.body)
-	// console.log("REQ",req)
+	console.log("REQ",req)
 	// let state = req.query['state']
 	// let client_id = req.query['client_id']
 
