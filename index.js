@@ -63,6 +63,12 @@ app.post('/imichatclosed', function(req, res) {
 	}
 })
 
+let users = [
+	{email: "aditya.c@imimobile.com", password: "qwerty", passcode: "345637", token: "181iasjd192kjksnd918ekajsn91822ne91wd"},
+	{email: "siva.b@imimobile.com", password: "qwerty", passcode: "631247", token: "181iasjd192kjks1oiwn1dklsk1oism1doi1md"},
+	{email: "alex@imimobile.com", password: "qwerty", passcode: "097642", token: "181iasjd192kjksni1sudiu1miub1sd99wd98uw"}
+]
+
 app.post('/login', function(req, res) {
 	console.log("QUERY",req.query)
 	console.log("BODY",req.body)
@@ -75,9 +81,28 @@ app.post('/login', function(req, res) {
 	let response_type = req.body['response_type']
 	let scope = req.body['scope']
 
-	let access_token = "alskdnl12kennl1k"
+	let error = ''
 
-	let final_uri = redirect_uri + "#access_token=" + access_token + "&state=" + state + "&token_type=Bearer"
+	let access_token = ''
+
+	for(var i=0; i<users.length; i++) {
+		if(users[i].email == email) {
+			if(users[i].password == password) {
+				access_token = users[i].token
+			} else {
+				error = "Wrong password"
+			}
+		} else {
+			error = "Wrong email"
+		}
+	}
+
+	if(access_token != '') {
+		let final_uri = redirect_uri + "#access_token=" + access_token + "&state=" + state + "&token_type=Bearer"
+	} else {
+		let final_uri = 'https://ancient-fjord-82489.herokuapp.com/login.html?client_id=' + client_id + '&scope=' + scope + '&response_type=' + response_type + '&state=' + state + '&redirect_uri=' + redirect_uri
+	}
+
 	// res.sendFile(__dirname + '/success.html')
 	res.redirect(final_uri)
 })
