@@ -22,18 +22,26 @@
 
   </head>
   <body>
-    <h1>Barclaycard</h1>
-
-    <form method="POST" action="/login">
-      <input type="hidden" name="client_id" id="client_id" />
-      <input type="hidden" name="state" id="state" />
-      <input type="hidden" name="response_type" id="response_type" />
-      <input type="hidden" name="scope" id="scope" />
-      <input type="hidden" name="redirect_uri" id="redirect_uri" />
-      <input type="text" name="email" id="email" placeholder="Email" /> <br>
-      <input type="text" name="password" id="password" placeholder="Password" />
-      <input type="submit" id="submit" value="Login" />
-    </form>
+    <div class="col-md-12 center-block">
+      <h2 class="text-left">Barclaycard</h2>
+      <br>
+      <form method="POST" action="/login">
+        <input type="hidden" name="client_id" id="client_id" />
+        <input type="hidden" name="state" id="state" />
+        <input type="hidden" name="response_type" id="response_type" />
+        <input type="hidden" name="scope" id="scope" />
+        <input type="hidden" name="redirect_uri" id="redirect_uri" />
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" name="email" id="email" placeholder="Email" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" name="password" id="password" placeholder="Password" />
+        </div>
+        <input type="submit" class="btn btn-primary btn-block" id="submit" value="Login" />
+      </form>
+    </div>
 
   </body>
 
