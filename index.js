@@ -97,10 +97,12 @@ app.post('/login', function(req, res) {
 		}
 	}
 
+	let final_uri = ''
+
 	if(access_token != '') {
-		let final_uri = redirect_uri + "#access_token=" + access_token + "&state=" + state + "&token_type=Bearer"
+		final_uri = redirect_uri + "#access_token=" + access_token + "&state=" + state + "&token_type=Bearer"
 	} else {
-		let final_uri = 'https://ancient-fjord-82489.herokuapp.com/login.html?client_id=' + client_id + '&scope=' + scope + '&response_type=' + response_type + '&state=' + state + '&redirect_uri=' + redirect_uri
+		final_uri = 'https://ancient-fjord-82489.herokuapp.com/login.html?client_id=' + client_id + '&scope=' + scope + '&response_type=' + response_type + '&state=' + state + '&redirect_uri=' + redirect_uri
 	}
 
 	// res.sendFile(__dirname + '/success.html')
