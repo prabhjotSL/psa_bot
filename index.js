@@ -64,9 +64,10 @@ app.post('/imichatclosed', function(req, res) {
 })
 
 app.get('/oauth', function(req, res) {
-	console.log(req.query)
-	console.log(req.body)
-	res.sendFile('login.html')
+	console.log("QUERY",req.query)
+	console.log("BODY",req.body)
+	console.log("REQ",req)
+	res.sendFile(__dirname + '/login.html')
 })
 
 // for facebook verification
