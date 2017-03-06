@@ -63,12 +63,17 @@ app.post('/imichatclosed', function(req, res) {
 	}
 })
 
-app.get('/oauth', function(req, res) {
+app.post('/login', function(req, res) {
 	console.log("QUERY",req.query)
 	console.log("BODY",req.body)
-	console.log("REQ",req)
-	res.sendFile(__dirname + '/login.html')
+	// console.log("REQ",req)
+	// let state = req.query['state']
+	// let client_id = req.query['client_id']
+
+	res.sendFile(__dirname + '/success.html')
 })
+
+app.
 
 // for facebook verification
 app.get('/webhook/', function (req, res) {
