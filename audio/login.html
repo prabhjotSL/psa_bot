@@ -30,8 +30,8 @@
       <input type="hidden" name="response_type" id="response_type" />
       <input type="hidden" name="scope" id="scope" />
       <input type="hidden" name="redirect_uri" id="redirect_uri" />
-      <input type="text" id="email" placeholder="Email" />
-      <input type="text" id="password" placeholder="Password" />
+      <input type="text" name="email" id="email" placeholder="Email" value="email" /> <br>
+      <input type="text" name="password" id="password" placeholder="Password" value="password" />
       <input type="submit" id="submit" value="Login" />
     </form>
 
@@ -56,11 +56,11 @@
     var scope = getParameterByName('scope');
     var redirect_uri = getParameterByName('redirect_uri');
 
-    $("#client_id").text(client_id);
-    $("#state").text(state);
-    $("#response_type").text(response_type);
-    $("#scope").text(scope);
-    $("#redirect_uri").text(redirect_uri);
+    $("#client_id").val(client_id);
+    $("#state").val(state);
+    $("#response_type").val(response_type);
+    $("#scope").val(scope);
+    $("#redirect_uri").val(redirect_uri);
 
   </script>
 </html>
