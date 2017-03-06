@@ -67,10 +67,19 @@ app.post('/login', function(req, res) {
 	console.log("QUERY",req.query)
 	console.log("BODY",req.body)
 	// console.log("REQ",req)
-	// let state = req.query['state']
-	// let client_id = req.query['client_id']
+	let state = req.body['state']
+	let client_id = req.body['client_id']
+	let redirect_uri = req.body['redirect_uri']
+	let email = req.body['email']
+	let password = req.body['password']
+	let response_type = req.body['response_type']
+	let scope = req.body['scope']
 
-	res.sendFile(__dirname + '/success.html')
+	let access_token = "alskdnl12kennl1k"
+
+	let final_uri = redirect_uri + "#access_token=" + access_token + "&state=" + state + "&token_type=" + token_type
+	// res.sendFile(__dirname + '/success.html')
+	res.redirect(final_uri)
 })
 
 // for facebook verification
